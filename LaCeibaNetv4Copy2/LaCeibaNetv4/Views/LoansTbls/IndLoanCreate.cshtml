@@ -1,0 +1,116 @@
+﻿@model LaCeibaNetv4.Models.LoansTbl
+
+@{
+    ViewBag.Title = "IndLoanCreate";
+}
+
+<h2>IndLoanCreate</h2> 
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>LoansTbl</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            
+            @Html.LabelFor(model => model.AmtLoan, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                
+                @Html.EditorFor(model => model.AmtLoan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AmtLoan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransferDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RepFreqId, "Payment Frequency",  htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RepFreqId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RepFreqId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Instalments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Instalments, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Instalments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+        <input type="hidden" name="Active" value="True">
+      
+        <input type="hidden"  name="RoundId" value= @ViewBag.RoundID > 
+
+        <input type="hidden"  name="Program" value= @ViewBag.ProgramName > 
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit" value="Create" name="action:Create" class="btn btn-default" />
+                <button type="submit" id="btnSubmit" name="Command" value="Calculate" class="btn btn-default">Calculate</button> 
+            </div>
+        </div>
+    </div>
+}
+<table class="table table-striped table-hover">
+    @if (ViewBag.plan != null)
+    {
+        <tr>
+            <th>#</th>
+            <th>Instalment Date</th>
+            <th>Amount Due</th>
+        </tr>
+        int i = 1;
+        double amt = 0;
+        foreach (var item in ViewBag.plan)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@item.DateDue.ToString("d") </td>
+                <td>L @item.AmtDue </td>
+            </tr>
+        amt = item.AmtDue;
+        i++;
+        }
+        amt = amt * (i-1);
+             <tr>
+                <td></td>
+                <td> </td>
+                <td>Total: @String.Format("{0:f2}", amt) </td>
+
+            </tr>
+        
+        }
+
+
+    
+    </table>
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

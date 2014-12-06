@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fd84bdc522584c36bdb54aef484a6cb8" Name="Diagram1">
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.CenterTbl" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.ClientsTbl" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.LoansTbl" Width="1.5" PointX="9.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.PaymentTbl" Width="1.5" PointX="12" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.ProgramClientTbl" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.ProgramTbl" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.RoundTbl" Width="1.5" PointX="7.5" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_ClientsTbl_CenterTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_ProgramClientTbl_ClientsTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_LoansTbl_RoundTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_PaymentTbl_LoansTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_ProgramClientTbl_ProgramTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_RoundTbl_ProgramClientTbl" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LaCeibaDbv4Model.RepFreq" Width="1.5" PointX="9.375" PointY="5.25" />
+        <AssociationConnector Association="LaCeibaDbv4Model.FK_LoansTbls_RepFreq" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

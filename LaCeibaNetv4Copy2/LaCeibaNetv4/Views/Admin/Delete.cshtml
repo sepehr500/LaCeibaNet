@@ -1,0 +1,18 @@
+﻿@model LaCeibaNetv4.Models.ApplicationUser
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+<p>Are you sure you want to delete @Model.UserName</p>
+
+@using (Html.BeginForm())
+{
+    <input hidden name="id" value="@Model.Id" />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    </div>
+
+}

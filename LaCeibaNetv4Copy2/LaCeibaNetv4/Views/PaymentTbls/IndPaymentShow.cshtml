@@ -1,0 +1,141 @@
+﻿@model LaCeibaNetv4.Models.LoansTbl
+
+@{
+    ViewBag.Title = "PaymentTblShow";
+}
+
+<h2>@Model.RoundTbl.ProgramClientTbl.ClientsTbl.FirstName @Model.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName1 @Model.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName2  @Model.RoundTbl.ProgramClientTbl.ClientsTbl.LastName @Model.RoundTbl.ProgramClientTbl.ProgramTbl.Program |Round:@Model.RoundTbl.RoundNum  | LP @String.Format("{0:f2}", Model.AmtLoan) </h2>
+
+<p>
+    @Html.ActionLink("Add New Payment", "IndPaymentCreate", new { controller = "PaymentTbls", id = Model.Id, DueDate = System.DateTime.Now })
+</p>
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            Date Payment Due
+        </th>
+        <th>
+            Date Paid
+        </th>
+        <th>
+            Amount Paid
+        </th>
+        <th>
+            Days Late
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.PaymentTbls)
+    {
+        <tr>
+            <td>
+                @item.DatePmtDue.ToString("d")
+            </td>
+            <td>
+
+                @{if (item.DatePmtPaid != null)
+                {
+                    System.DateTime rightDate = (System.DateTime)item.DatePmtPaid;
+                    @rightDate.ToString("d")
+                }
+                else
+                {
+                    @item.DatePmtPaid;
+                }
+
+
+                }
+            </td>
+            <td>
+                
+                L @String.Format("{0:f2}", item.AmtPaid)
+            </td>
+            <td>
+                @{ DateTime a = item.DatePmtPaid ?? DateTime.Now;
+                   TimeSpan z = a - item.DatePmtDue;
+                   
+                   }
+                @z.Days
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+            </td>
+        </tr>
+    }
+
+</table>
+<table class="table table-striped table-hover table-bordered">
+    @if (ViewBag.plan != null)
+    {
+        <tr>
+            <th>#</th>
+            <th>Instalment Date</th>
+            <th>Amount Due</th>
+            <th>Status</th>
+            <th></th>
+            
+        </tr>
+        int i = 1;
+        double amt = 0;
+        foreach (var item in ViewBag.plan)
+        {
+            if (item.status == 1)
+            {
+                <tr class="success">
+                    <td>@i</td>
+                    <td>@item.DateDue.ToString("d") </td>
+                    <td>L @item.AmtDue </td>
+                    <td><i class="glyphicon glyphicon-ok"></i></td>
+                </tr>
+            }
+            else if (item.status == 3)
+            {
+                <tr class="danger">
+                    <td>@i</td>
+                    <td>@item.DateDue.ToString("d") </td>
+                    <td>L @item.AmtDue </td>
+                    <td><i class="glyphicon glyphicon-remove"></i></td>
+                    <td>@Html.ActionLink("Pay Off", "IndPaymentCreate", new { id = Model.Id, dueDate = item.DateDue, AmtDue = item.AmtDue })</td>
+                </tr>
+            }
+            else if(item.status == 2){
+                 <tr class="warning">
+                    <td>@i</td>
+                    <td>@item.DateDue.ToString("d") </td>
+                    <td>L @item.AmtDue </td>
+                    <td><i class="glyphicon glyphicon-eye-open"></i></td>
+                </tr> 
+                
+            }
+            else
+            {
+                <tr class="info">
+                    <td>@i</td>
+                    <td>@item.DateDue.ToString("d") </td>
+                    <td>L @item.AmtDue </td>
+                    <td><b>pending</b> </td>
+                    <td>@Html.ActionLink("Pay Off", "IndPaymentCreate", new { id = Model.Id, dueDate = item.DateDue, AmtDue = item.AmtDue })</td>
+                </tr>
+            }
+
+            amt = item.AmtDue;
+            i++;
+        }
+        amt = amt * (i - 1);
+        <tr>
+            <td></td>
+            <td>Total: </td>
+            <td>@String.Format("{0:f2}", ViewBag.Total) </td>
+
+        </tr>
+
+    }
+
+
+
+</table>
+

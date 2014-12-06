@@ -1,0 +1,528 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LaCeibaDbv4Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CenterTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Center" Type="nchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientsTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="LastName" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CenterId" Type="int" Nullable="false" />
+          <Property Name="MiddleName1" Type="nchar" MaxLength="10" />
+          <Property Name="MiddleName2" Type="nchar" MaxLength="10" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+          <Property Name="BirthDay" Type="datetime" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="LoansTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AmtLoan" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="TransferDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="RoundId" Type="int" Nullable="false" />
+          <Property Name="RepFreqId" Type="int" />
+          <Property Name="Instalments" Type="int" />
+        </EntityType>
+        <EntityType Name="PaymentTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DatePmtDue" Type="datetime" Nullable="false" />
+          <Property Name="DatePmtPaid" Type="datetime" />
+          <Property Name="AmtPaid" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="LoanId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramClientTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="ProgramId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Program" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="InterestRate" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepFreq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Frequency" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoundTbls">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PClientNameId" Type="int" Nullable="false" />
+          <Property Name="RoundNum" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ClientsTbl_CenterTbl">
+          <End Role="CenterTbls" Type="Self.CenterTbls" Multiplicity="1" />
+          <End Role="ClientsTbls" Type="Self.ClientsTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CenterTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientsTbls">
+              <PropertyRef Name="CenterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoansTbl_RoundTbl">
+          <End Role="RoundTbls" Type="Self.RoundTbls" Multiplicity="1" />
+          <End Role="LoansTbls" Type="Self.LoansTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoundTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoansTbls">
+              <PropertyRef Name="RoundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoansTbls_RepFreq">
+          <End Role="RepFreq" Type="Self.RepFreq" Multiplicity="0..1" />
+          <End Role="LoansTbls" Type="Self.LoansTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepFreq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoansTbls">
+              <PropertyRef Name="RepFreqId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentTbl_LoansTbl">
+          <End Role="LoansTbls" Type="Self.LoansTbls" Multiplicity="1" />
+          <End Role="PaymentTbls" Type="Self.PaymentTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoansTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PaymentTbls">
+              <PropertyRef Name="LoanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramClientTbl_ClientsTbl">
+          <End Role="ClientsTbls" Type="Self.ClientsTbls" Multiplicity="1" />
+          <End Role="ProgramClientTbls" Type="Self.ProgramClientTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientsTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramClientTbls">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramClientTbl_ProgramTbl">
+          <End Role="ProgramTbls" Type="Self.ProgramTbls" Multiplicity="1" />
+          <End Role="ProgramClientTbls" Type="Self.ProgramClientTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramClientTbls">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoundTbl_ProgramClientTbl">
+          <End Role="ProgramClientTbls" Type="Self.ProgramClientTbls" Multiplicity="1" />
+          <End Role="RoundTbls" Type="Self.RoundTbls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramClientTbls">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoundTbls">
+              <PropertyRef Name="PClientNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LaCeibaDbv4ModelStoreContainer">
+          <EntitySet Name="CenterTbls" EntityType="Self.CenterTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientsTbls" EntityType="Self.ClientsTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoansTbls" EntityType="Self.LoansTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentTbls" EntityType="Self.PaymentTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramClientTbls" EntityType="Self.ProgramClientTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramTbls" EntityType="Self.ProgramTbls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepFreq" EntityType="Self.RepFreq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoundTbls" EntityType="Self.RoundTbls" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ClientsTbl_CenterTbl" Association="Self.FK_ClientsTbl_CenterTbl">
+            <End Role="CenterTbls" EntitySet="CenterTbls" />
+            <End Role="ClientsTbls" EntitySet="ClientsTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoansTbl_RoundTbl" Association="Self.FK_LoansTbl_RoundTbl">
+            <End Role="RoundTbls" EntitySet="RoundTbls" />
+            <End Role="LoansTbls" EntitySet="LoansTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoansTbls_RepFreq" Association="Self.FK_LoansTbls_RepFreq">
+            <End Role="RepFreq" EntitySet="RepFreq" />
+            <End Role="LoansTbls" EntitySet="LoansTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentTbl_LoansTbl" Association="Self.FK_PaymentTbl_LoansTbl">
+            <End Role="LoansTbls" EntitySet="LoansTbls" />
+            <End Role="PaymentTbls" EntitySet="PaymentTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramClientTbl_ClientsTbl" Association="Self.FK_ProgramClientTbl_ClientsTbl">
+            <End Role="ClientsTbls" EntitySet="ClientsTbls" />
+            <End Role="ProgramClientTbls" EntitySet="ProgramClientTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramClientTbl_ProgramTbl" Association="Self.FK_ProgramClientTbl_ProgramTbl">
+            <End Role="ProgramTbls" EntitySet="ProgramTbls" />
+            <End Role="ProgramClientTbls" EntitySet="ProgramClientTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoundTbl_ProgramClientTbl" Association="Self.FK_RoundTbl_ProgramClientTbl">
+            <End Role="ProgramClientTbls" EntitySet="ProgramClientTbls" />
+            <End Role="RoundTbls" EntitySet="RoundTbls" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LaCeibaDbv4Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CenterTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Center" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ClientsTbls" Relationship="Self.FK_ClientsTbl_CenterTbl" FromRole="CenterTbl" ToRole="ClientsTbl" />
+        </EntityType>
+        <EntityType Name="ClientsTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CenterId" Type="Int32" Nullable="false" />
+          <Property Name="MiddleName1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="MiddleName2" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CenterTbl" Relationship="Self.FK_ClientsTbl_CenterTbl" FromRole="ClientsTbl" ToRole="CenterTbl" />
+          <NavigationProperty Name="ProgramClientTbls" Relationship="Self.FK_ProgramClientTbl_ClientsTbl" FromRole="ClientsTbl" ToRole="ProgramClientTbl" />
+          <Property Name="BirthDay" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="LoansTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AmtLoan" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="TransferDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="RoundId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RoundTbl" Relationship="Self.FK_LoansTbl_RoundTbl" FromRole="LoansTbl" ToRole="RoundTbl" />
+          <NavigationProperty Name="PaymentTbls" Relationship="Self.FK_PaymentTbl_LoansTbl" FromRole="LoansTbl" ToRole="PaymentTbl" />
+          <Property Name="RepFreqId" Type="Int32" />
+          <NavigationProperty Name="RepFreq" Relationship="LaCeibaDbv4Model.FK_LoansTbls_RepFreq" FromRole="LoansTbl" ToRole="RepFreq" />
+          <Property Name="Instalments" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PaymentTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DatePmtDue" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DatePmtPaid" Type="DateTime" Precision="3" />
+          <Property Name="AmtPaid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LoanId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LoansTbl" Relationship="Self.FK_PaymentTbl_LoansTbl" FromRole="PaymentTbl" ToRole="LoansTbl" />
+        </EntityType>
+        <EntityType Name="ProgramClientTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ClientsTbl" Relationship="Self.FK_ProgramClientTbl_ClientsTbl" FromRole="ProgramClientTbl" ToRole="ClientsTbl" />
+          <NavigationProperty Name="ProgramTbl" Relationship="Self.FK_ProgramClientTbl_ProgramTbl" FromRole="ProgramClientTbl" ToRole="ProgramTbl" />
+          <NavigationProperty Name="RoundTbls" Relationship="Self.FK_RoundTbl_ProgramClientTbl" FromRole="ProgramClientTbl" ToRole="RoundTbl" />
+        </EntityType>
+        <EntityType Name="ProgramTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Program" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="InterestRate" Type="Double" Nullable="false" />
+          <NavigationProperty Name="ProgramClientTbls" Relationship="Self.FK_ProgramClientTbl_ProgramTbl" FromRole="ProgramTbl" ToRole="ProgramClientTbl" />
+        </EntityType>
+        <EntityType Name="RoundTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PClientNameId" Type="Int32" Nullable="false" />
+          <Property Name="RoundNum" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LoansTbls" Relationship="Self.FK_LoansTbl_RoundTbl" FromRole="RoundTbl" ToRole="LoansTbl" />
+          <NavigationProperty Name="ProgramClientTbl" Relationship="Self.FK_RoundTbl_ProgramClientTbl" FromRole="RoundTbl" ToRole="ProgramClientTbl" />
+        </EntityType>
+        <Association Name="FK_ClientsTbl_CenterTbl">
+          <End Role="CenterTbl" Type="Self.CenterTbl" Multiplicity="1" />
+          <End Role="ClientsTbl" Type="Self.ClientsTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CenterTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientsTbl">
+              <PropertyRef Name="CenterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramClientTbl_ClientsTbl">
+          <End Role="ClientsTbl" Type="Self.ClientsTbl" Multiplicity="1" />
+          <End Role="ProgramClientTbl" Type="Self.ProgramClientTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientsTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramClientTbl">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoansTbl_RoundTbl">
+          <End Role="RoundTbl" Type="Self.RoundTbl" Multiplicity="1" />
+          <End Role="LoansTbl" Type="Self.LoansTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoundTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoansTbl">
+              <PropertyRef Name="RoundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentTbl_LoansTbl">
+          <End Role="LoansTbl" Type="Self.LoansTbl" Multiplicity="1" />
+          <End Role="PaymentTbl" Type="Self.PaymentTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoansTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PaymentTbl">
+              <PropertyRef Name="LoanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramClientTbl_ProgramTbl">
+          <End Role="ProgramTbl" Type="Self.ProgramTbl" Multiplicity="1" />
+          <End Role="ProgramClientTbl" Type="Self.ProgramClientTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramClientTbl">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoundTbl_ProgramClientTbl">
+          <End Role="ProgramClientTbl" Type="Self.ProgramClientTbl" Multiplicity="1" />
+          <End Role="RoundTbl" Type="Self.RoundTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramClientTbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoundTbl">
+              <PropertyRef Name="PClientNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LaCeibaDbv4Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CenterTbls" EntityType="Self.CenterTbl" />
+          <EntitySet Name="ClientsTbls" EntityType="Self.ClientsTbl" />
+          <EntitySet Name="LoansTbls" EntityType="Self.LoansTbl" />
+          <EntitySet Name="PaymentTbls" EntityType="Self.PaymentTbl" />
+          <EntitySet Name="ProgramClientTbls" EntityType="Self.ProgramClientTbl" />
+          <EntitySet Name="ProgramTbls" EntityType="Self.ProgramTbl" />
+          <EntitySet Name="RoundTbls" EntityType="Self.RoundTbl" />
+          <AssociationSet Name="FK_ClientsTbl_CenterTbl" Association="Self.FK_ClientsTbl_CenterTbl">
+            <End Role="CenterTbl" EntitySet="CenterTbls" />
+            <End Role="ClientsTbl" EntitySet="ClientsTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramClientTbl_ClientsTbl" Association="Self.FK_ProgramClientTbl_ClientsTbl">
+            <End Role="ClientsTbl" EntitySet="ClientsTbls" />
+            <End Role="ProgramClientTbl" EntitySet="ProgramClientTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoansTbl_RoundTbl" Association="Self.FK_LoansTbl_RoundTbl">
+            <End Role="RoundTbl" EntitySet="RoundTbls" />
+            <End Role="LoansTbl" EntitySet="LoansTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentTbl_LoansTbl" Association="Self.FK_PaymentTbl_LoansTbl">
+            <End Role="LoansTbl" EntitySet="LoansTbls" />
+            <End Role="PaymentTbl" EntitySet="PaymentTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramClientTbl_ProgramTbl" Association="Self.FK_ProgramClientTbl_ProgramTbl">
+            <End Role="ProgramTbl" EntitySet="ProgramTbls" />
+            <End Role="ProgramClientTbl" EntitySet="ProgramClientTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoundTbl_ProgramClientTbl" Association="Self.FK_RoundTbl_ProgramClientTbl">
+            <End Role="ProgramClientTbl" EntitySet="ProgramClientTbls" />
+            <End Role="RoundTbl" EntitySet="RoundTbls" />
+          </AssociationSet>
+          <EntitySet Name="RepFreq" EntityType="LaCeibaDbv4Model.RepFreq" />
+          <AssociationSet Name="FK_LoansTbls_RepFreq" Association="LaCeibaDbv4Model.FK_LoansTbls_RepFreq">
+            <End Role="RepFreq" EntitySet="RepFreq" />
+            <End Role="LoansTbl" EntitySet="LoansTbls" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="RepFreq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="LoansTbls" Relationship="LaCeibaDbv4Model.FK_LoansTbls_RepFreq" FromRole="RepFreq" ToRole="LoansTbl" />
+          <Property Name="Frequency" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_LoansTbls_RepFreq">
+          <End Type="LaCeibaDbv4Model.RepFreq" Role="RepFreq" Multiplicity="0..1" />
+          <End Type="LaCeibaDbv4Model.LoansTbl" Role="LoansTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepFreq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoansTbl">
+              <PropertyRef Name="RepFreqId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LaCeibaDbv4ModelStoreContainer" CdmEntityContainer="LaCeibaDbv4Entities">
+    <EntitySetMapping Name="CenterTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.CenterTbl)">
+        <MappingFragment StoreEntitySet="CenterTbls">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Center" ColumnName="Center" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientsTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.ClientsTbl)">
+        <MappingFragment StoreEntitySet="ClientsTbls">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="CenterId" ColumnName="CenterId" />
+          <ScalarProperty Name="MiddleName1" ColumnName="MiddleName1" />
+          <ScalarProperty Name="MiddleName2" ColumnName="MiddleName2" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoansTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.LoansTbl)">
+        <MappingFragment StoreEntitySet="LoansTbls">
+          <ScalarProperty Name="Instalments" ColumnName="Instalments" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AmtLoan" ColumnName="AmtLoan" />
+          <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="RoundId" ColumnName="RoundId" />
+          <ScalarProperty Name="RepFreqId" ColumnName="RepFreqId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.PaymentTbl)">
+        <MappingFragment StoreEntitySet="PaymentTbls">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DatePmtDue" ColumnName="DatePmtDue" />
+          <ScalarProperty Name="DatePmtPaid" ColumnName="DatePmtPaid" />
+          <ScalarProperty Name="AmtPaid" ColumnName="AmtPaid" />
+          <ScalarProperty Name="LoanId" ColumnName="LoanId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProgramClientTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.ProgramClientTbl)">
+        <MappingFragment StoreEntitySet="ProgramClientTbls">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProgramTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.ProgramTbl)">
+        <MappingFragment StoreEntitySet="ProgramTbls">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Program" ColumnName="Program" />
+          <ScalarProperty Name="InterestRate" ColumnName="InterestRate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoundTbls">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.RoundTbl)">
+        <MappingFragment StoreEntitySet="RoundTbls">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PClientNameId" ColumnName="PClientNameId" />
+          <ScalarProperty Name="RoundNum" ColumnName="RoundNum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RepFreq">
+      <EntityTypeMapping TypeName="IsTypeOf(LaCeibaDbv4Model.RepFreq)">
+        <MappingFragment StoreEntitySet="RepFreq">
+          <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

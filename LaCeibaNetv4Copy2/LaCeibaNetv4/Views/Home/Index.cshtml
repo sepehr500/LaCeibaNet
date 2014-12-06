@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Welcome To LaCeibaNet!</h1>
+    
+    
+</div>
+<div class="row">
+    <div class="col-md-12">
+         <img src="~/CEIBA2-231x300.jpg" class="img-responsive" style="margin:auto" />   
+    </div> 
+</div>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Live Chat</h2>
+        Username: <input type="text" name="username" />
+        Message: <input type="text" name="message" />
+        <input type="button" name="send" value="Send" />
+        <ul id="liveHelp"> </ul>
+        
+    </div>
+</div>*@
+@section scripts{
+
+    <script src="~/Scripts/jquery.signalR-2.0.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        var liveHelp= $.connection.liveHelpHub;
+        liveHelp.client.showMessage = function (username, message) {
+            $('#liveHelp').append('<li>' + username + ':' + message + '</li>');
+        };
+        $.connection.hub.start().done(function () {
+            $('#send').click(function () {
+                liveChat.server.sendMessage($('#username').val(), $('#message').val
+            ());
+                $('#message').val('');
+            });
+        });
+    </script>
+}

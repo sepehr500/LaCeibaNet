@@ -1,0 +1,50 @@
+﻿@model LaCeibaNetv4.Models.PaymentTbl
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PaymentTbl</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DatePmtDue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatePmtDue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatePmtPaid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatePmtPaid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AmtPaid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AmtPaid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoansTbl.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoansTbl.Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
