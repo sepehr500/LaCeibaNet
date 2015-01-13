@@ -126,7 +126,7 @@ namespace LaCeibaNetv4.Controllers
             if (Command == "Calculate")
             {
                 PPlanHold holder = new PPlanHold();
-                holder.CreatePlan(Convert.ToInt32(newloan.Instalments), newloan.RepFreqId, (float)newloan.AmtLoan, Program, newloan.TransferDate);
+                holder.CreatePlan(Convert.ToInt32(newloan.Instalments), newloan.RepFreqId, newloan.AmtLoan, Program, newloan.TransferDate);
                 ViewBag.RoundId = (int)newloan.RoundId;
                 RoundTbl RoundTbl = db.RoundTbls.Find(newloan.RoundId);
                 ViewBag.ProgramName = RoundTbl.ProgramClientTbl.ProgramTbl.Program;
@@ -189,5 +189,21 @@ namespace LaCeibaNetv4.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult PLPContract(int id) {
+            LoansTbl loan = db.LoansTbls.Find(id);
+            string Program = loan.RoundTbl.ProgramClientTbl.ProgramTbl.Program;
+         
+                PPlanHold holder = new PPlanHold();
+                holder.CreatePlan(Convert.ToInt32(loan.Instalments), loan.RepFreqId, loan.AmtLoan, Program, loan.TransferDate);
+
+                ViewBag.plan = holder.Plan;
+                ViewBag.planDeets = holder;
+                ViewBag.ClientName = loan.RoundTbl.ProgramClientTbl.ClientsTbl.FirstName + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName1 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName2 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.LastName;
+            
+
+                return View(loan);
+        }
+        
     }
 }

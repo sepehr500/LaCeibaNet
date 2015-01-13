@@ -80,7 +80,7 @@
             
         </tr>
         int i = 1;
-        double amt = 0;
+        decimal amt = 0;
         foreach (var item in ViewBag.plan)
         {
             if (item.status == 1)
@@ -136,6 +136,8 @@
     }
 
 
+   
 
 </table>
+@Html.ActionLink("Generate Contract", "PLPContract", new { controller = "LoansTbls", id = Model.Id })
 

@@ -241,6 +241,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\EAL.png" />
+    <Content Include="Images\PLP.jpg" />
     <Content Include="Models\LaCeibaDbv4Model.edmx.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -353,6 +355,7 @@
     <Content Include="Views\RoleAdmin\Edit.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Analysis\Index.cshtml" />
+    <Content Include="Views\LoansTbls\PLPContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
