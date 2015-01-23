@@ -108,6 +108,7 @@
                     <td>@item.DateDue.ToString("d") </td>
                     <td>L @item.AmtDue </td>
                     <td><i class="glyphicon glyphicon-eye-open"></i></td>
+                    <td>@Html.ActionLink("Pay Off", "IndPaymentCreate", new { id = Model.Id, dueDate = item.DateDue, AmtDue = item.AmtDue })</td>
                 </tr> 
                 
             }

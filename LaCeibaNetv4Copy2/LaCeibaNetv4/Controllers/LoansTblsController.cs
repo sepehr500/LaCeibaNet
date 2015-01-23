@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using LaCeibaNetv4.Models;
 using LaCeibaNetv4.Models.Classes;
+using LaCeibaNetv4.ToolsStuff;
 
 namespace LaCeibaNetv4.Controllers
 {
@@ -199,6 +200,7 @@ namespace LaCeibaNetv4.Controllers
 
                 ViewBag.plan = holder.Plan;
                 ViewBag.planDeets = holder;
+                
                 ViewBag.ClientName = loan.RoundTbl.ProgramClientTbl.ClientsTbl.FirstName + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName1 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName2 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.LastName;
             
 

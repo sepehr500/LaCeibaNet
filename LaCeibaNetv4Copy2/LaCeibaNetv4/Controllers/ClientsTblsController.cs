@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LaCeibaNetv4.Models;
+using LaCeibaNetv4.ToolsStuff;
 
 namespace LaCeibaNetv4.Controllers
 {
@@ -85,6 +86,14 @@ namespace LaCeibaNetv4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,FirstName,LastName,CenterId,MiddleName1,MiddleName2,DateAdded,BirthDay")] ClientsTbl clientsTbl)
         {
+
+            if (SpanDate.DupCheck(clientsTbl) == false)
+            {
+                ViewBag.CenterId = new SelectList(db.CenterTbls, "Id", "Center", clientsTbl.CenterId);
+                ViewBag.DuplicateError = "Person Already Exists";
+                return View(clientsTbl);
+            }
+            
             if (ModelState.IsValid)
             {
 

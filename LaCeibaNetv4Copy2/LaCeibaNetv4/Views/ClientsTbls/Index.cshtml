@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateAdded)
+                @item.DateAdded.Date.ToString("d")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CenterTbl.Center)
@@ -69,7 +69,7 @@
             <td>
                 @if (item.Active == null) { 
                 
-                    <p>null</p>
+                    <p>Exited</p>
                 
                 }
                 
@@ -81,6 +81,7 @@
                else if((bool)item.Active == false) {
                         <i class="glyphicon glyphicon-remove"></i>
                }
+
 
             </td>
        <td>
@@ -106,8 +107,7 @@
        </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) 
             </td>
         </tr>
     }

@@ -213,7 +213,7 @@ namespace LaCeibaNetv4.Models.Classes
 	{
 		 
 	
-            if (0 > x.DateDue.AddMonths(1).CompareTo(DateTime.Now))
+            if (0 > x.DateDue.AddMonths(3).CompareTo(DateTime.Now))
             {
                 x.status = 3;
             }
