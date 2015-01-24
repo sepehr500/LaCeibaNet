@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<LaCeibaNetv4.Models.ClientsTbl>
 @using LaCeibaNetv4.Models.Classes;
+@using LaCeibaNetv4.ToolsStuff;
 @{
     ViewBag.Title = "Index";
 }
@@ -107,7 +108,13 @@
        </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                @if (SpanDate.getRecentPayment(item) != null)
+                { 
+                @:| @Html.ActionLink("L.L", "IndPaymentShow", "PaymentTbls", new { id = SpanDate.getRecentPayment(item)  } , null) 
+                
+                }
+
             </td>
         </tr>
     }

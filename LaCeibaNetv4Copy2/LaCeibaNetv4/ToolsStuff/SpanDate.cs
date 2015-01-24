@@ -82,5 +82,30 @@ namespace LaCeibaNetv4.ToolsStuff
         
         
         }
+        public static int? getRecentPayment(ClientsTbl x) {
+
+
+            try
+            {
+                 if (x.ProgramClientTbls.ToList().Last().RoundTbls.ToList().Last().LoansTbls.ToList().Last().Id != null)
+            {
+                return x.ProgramClientTbls.ToList().Last().RoundTbls.ToList().Last().LoansTbls.ToList().Last().Id;
+            }
+            else
+            {
+                return null;
+            }
+            }
+            catch (InvalidOperationException excep)
+            {
+                
+                return null;
+            }
+           
+            
+                
+            
+        
+        }
     }
 }
