@@ -74,6 +74,8 @@
     </dl>
 </div>
 <p>
+   
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") 
+    <p align="right">@Html.ActionLink("Delete", "Delete", new { id = Model.Id })</p> 
 </p>

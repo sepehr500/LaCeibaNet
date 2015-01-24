@@ -129,8 +129,22 @@ namespace LaCeibaNetv4.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,CenterId,MiddleName1,MiddleName2,DateAdded, Active")] ClientsTbl clientsTbl)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,CenterId,MiddleName1,MiddleName2,DateAdded")] ClientsTbl clientsTbl , string status)
         {
+            switch (status)
+            {
+                case "1":
+                    clientsTbl.Active = true;
+                    break;
+                case "0":
+                    clientsTbl.Active = false;
+                    break;
+                case "null":
+                    clientsTbl.Active = null;
+                    break;
+                
+                  
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(clientsTbl).State = EntityState.Modified;

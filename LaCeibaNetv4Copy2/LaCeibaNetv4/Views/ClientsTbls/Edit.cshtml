@@ -67,8 +67,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Active)
+                <div class="dropdown">
+                   *@Html.DropDownList("status", new List<SelectListItem>
+        {
+            new SelectListItem {Text = "Active", Value = "1"},
+            new SelectListItem {Text = "Inactive", Value = "0"},
+            new SelectListItem {Text = "Exited", Value = "null"}
+
+
+        }, new { @class = "form-control" })
+                 
                     @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
                 </div>
             </div>
