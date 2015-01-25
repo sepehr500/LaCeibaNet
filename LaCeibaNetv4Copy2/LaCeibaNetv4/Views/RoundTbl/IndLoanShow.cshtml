@@ -4,7 +4,7 @@
     ViewBag.Title = "RoundTblShow";
 }
 
-<h2>@Model.ProgramClientTbl.ClientsTbl.FirstName @Model.ProgramClientTbl.ClientsTbl.MiddleName1 @Model.ProgramClientTbl.ClientsTbl.MiddleName2  @Model.ProgramClientTbl.ClientsTbl.LastName @Model.ProgramClientTbl.ProgramTbl.Program | Round:@Model.RoundNum Loans</h2>
+<h2> <span style="color: #000000;">@Model.ProgramClientTbl.ClientsTbl.FirstName @Model.ProgramClientTbl.ClientsTbl.MiddleName1 @Model.ProgramClientTbl.ClientsTbl.MiddleName2  @Model.ProgramClientTbl.ClientsTbl.LastName</span> | <span style="color: #080468">@Model.ProgramClientTbl.ProgramTbl.Program</span> | <span style="color: #130da9">Round:@Model.RoundNum</span>   </h2>
 
 <p>
      @Html.ActionLink("Add New Loan", "IndLoanCreate", new { controller = "LoansTbls", id = Model.Id })
@@ -47,3 +47,5 @@
     }
 
 </table>
+
+@Html.ActionLink("Back", "IndRoundShow", "ProgramClientTbls", new {id = Model.PClientNameId }, null) |

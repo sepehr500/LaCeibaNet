@@ -4,7 +4,7 @@
     ViewBag.Title = "Individual Round";
 }
 
-<h2>@Model.ClientsTbl.FirstName @Model.ClientsTbl.MiddleName1 @Model.ClientsTbl.MiddleName2  @Model.ClientsTbl.LastName @Model.ProgramTbl.Program Rounds</h2>
+<h2>@Model.ClientsTbl.FirstName @Model.ClientsTbl.MiddleName1 @Model.ClientsTbl.MiddleName2  @Model.ClientsTbl.LastName | <span style="color: #080468">@Model.ProgramTbl.Program Rounds</span></h2>
 
 <p>
     @Html.ActionLink("New Round", "AGRound", new { controller = "RoundTbl", id = Model.Id })

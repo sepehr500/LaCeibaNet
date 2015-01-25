@@ -232,6 +232,7 @@
     </Compile>
     <Compile Include="LiveHelpHub.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ToolsStuff\Indicators.cs" />
     <Compile Include="ToolsStuff\SpanDate.cs" />
   </ItemGroup>
   <ItemGroup>
