@@ -15,3 +15,6 @@ select,
 textarea {
     max-width: 280px;
 }
+
+body {top: 0px !important; position: static !important; }
+.goog-te-banner-frame {display:none !important}

@@ -65,6 +65,7 @@ namespace LaCeibaNetv4.Models
     {
         [Display(Name="Loan Amount Is")]
         public decimal AmtLoan { get; set; }
+        [Display(Name = "Dispursal Date")]
         [DataType(DataType.Date)]
         public System.DateTime TransferDate { get; set; }
         public bool Active { get; set; }
