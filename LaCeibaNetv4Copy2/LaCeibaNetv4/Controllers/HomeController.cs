@@ -21,6 +21,8 @@ namespace LaCeibaNetv4.Controllers
             ViewBag.VAR = db.VAR();
             ViewBag.IR = db.InterestReceivable();
             ViewBag.IRev = db.InterestRevenue();
+            db.StatusPerLoanLevel(true);
+            
             return View();
         }
 

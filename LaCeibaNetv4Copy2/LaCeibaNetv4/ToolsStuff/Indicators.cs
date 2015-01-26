@@ -216,5 +216,25 @@ namespace LaCeibaNetv4.ToolsStuff
             return Decimal.Round(TotalWithInterest - TotalLoanedOut , 2);
 
         }
+
+        public static List<KeyValuePair<int, int>> StatusPerLoanLevel(this LaCeibaDbv4Entities db, bool? status)
+        {
+
+            var MainList = db.RoundTbls.Where(x => x.ProgramClientTbl.ClientsTbl.Active == status).GroupBy(x => x.RoundNum).ToList();
+
+            var ReturnList = new List<KeyValuePair<int, int>>();
+
+            foreach (var item in MainList)
+            {
+                ReturnList.Add(new KeyValuePair<int , int>(item.Key , item.Count()));
+            }
+
+
+
+
+
+            return ReturnList;
+
+         }
     }
 }
