@@ -43,11 +43,27 @@
         </h4>
         <h4 id="IndicatorBox">
             <abbr title="Gross Loan Portfolio">GLP</abbr> :
-            HNL @ViewBag.GLP
+             @ViewBag.GLP HNL
         </h4>
         <h4 id="IndicatorBox">
             <abbr title="Average Loan Size">ALS </abbr> :
-            HNL @ViewBag.ALS
+             @ViewBag.ALS HNL
+        </h4>
+        <h4 id="IndicatorBox">
+            <abbr title="Portfolio At Risk">PAR</abbr> :
+            @ViewBag.PAR % > 30 days
+        </h4>
+        <h4 id="IndicatorBox">
+            <abbr title="Value At Risk">VAR</abbr> :
+            @ViewBag.VAR HNL
+        </h4>
+        <h4 id="IndicatorBox">
+            Interest Receivable :
+            @ViewBag.IR HNL
+        </h4>
+        <h4 id="IndicatorBox">
+            Interest Revenue :
+            @ViewBag.IRev HNL
         </h4>
     </div>
 

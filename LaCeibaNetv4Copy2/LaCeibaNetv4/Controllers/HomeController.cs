@@ -17,6 +17,10 @@ namespace LaCeibaNetv4.Controllers
             ViewBag.RepaymentRate = db.repaymentRate().ToString("#.##");
             ViewBag.GLP = db.grossLoanPortfolio().ToString("#.##");
             ViewBag.ALS = db.averageLoanSize().ToString("#.##");
+            ViewBag.PAR = db.PAR(30);
+            ViewBag.VAR = db.VAR();
+            ViewBag.IR = db.InterestReceivable();
+            ViewBag.IRev = db.InterestRevenue();
             return View();
         }
 
