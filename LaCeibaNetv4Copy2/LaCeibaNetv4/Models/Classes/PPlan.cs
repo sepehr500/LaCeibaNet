@@ -243,7 +243,198 @@ namespace LaCeibaNetv4.Models.Classes
     
     
     }
-    
+
+    public void CreatePlanV2( LoansTbl Loan , double ProgramIR)
+    {
+        //Interest Rate
+        decimal PaymentTotal = (decimal)Loan.PaymentTbls.Sum(x => x.AmtPaid);
+        double IR = ProgramIR / 100;
+        double PDLength = 0;
+        int days = 0;
+        decimal pp = 0m;
+        bool month = false;
+        switch (Loan.RepFreqId)
+        {
+            case 1:
+                month = true;
+                PDLength = 1 / 12d;
+                break;
+            case 2:
+                days = 7;
+                PDLength = 1 / 52d;
+                break;
+            case 3:
+                days = 14;
+                PDLength = 1 / 26d;
+
+                break; 
+        }
+        //Interest Rate per Period
+        decimal IRPP = (decimal)IR * (decimal)PDLength;
+        pp = IRPP * Loan.AmtLoan / (decimal)(1 - (Math.Pow(1 + (double)IRPP, (double)Loan.Instalments * -1)));
+        this.amtEachInstalment = pp;
+
+        decimal rounded = decimal.Round(pp, 2);
+
+        this.Plan = new ArrayList();
+
+        DateTime temp = Loan.TransferDate;
+     
+        for (int i = 0; i < Loan.Instalments; i++)
+        {
+            PaymentTotal = decimal.Round(PaymentTotal, 2);
+            PPlan x = new PPlan();
+           
+            x.AmtDue = rounded;
+            if (PaymentTotal >= x.AmtDue)
+            {
+                PaymentTotal -= (decimal)x.AmtDue;
+                x.AmtDue = 0;
+            }
+            else
+            {
+                x.AmtDue -= PaymentTotal;
+                PaymentTotal = 0;
+            }
+            if (month)
+            {
+                x.DateDue = temp.AddMonths(1);
+            }
+            else
+            {
+                x.DateDue = temp.AddDays(days);
+            }
+            temp = x.DateDue;
+            if (x.AmtDue != 0)
+            {
+
+
+                if (0 > x.DateDue.AddMonths(3).CompareTo(DateTime.Now))
+                {
+                    x.status = 3;
+                }
+                else if (0 > x.DateDue.CompareTo(DateTime.Now))
+                {
+                    x.status = 2;
+                }
+                else
+                {
+                    x.status = 0;
+                }
+
+            }
+            else
+            {
+                x.status = 1;
+            }
+            Plan.Add(x);
+
+
+        }
+        foreach (PPlan item in Plan)
+        {
+            this.TotalOwed += item.AmtDue;
+
+        }
+    }
+    public void CreatePlanV2(LoansTbl Loan)
+    {
+        //Interest Rate
+        decimal PaymentTotal = (decimal)Loan.PaymentTbls.Sum(x => x.AmtPaid);
+        double IR = Loan.RoundTbl.ProgramClientTbl.ProgramTbl.InterestRate / 100;
+        double PDLength = 0;
+        int days = 0;
+        decimal pp = 0m;
+        bool month = false;
+        switch (Loan.RepFreqId)
+        {
+            case 1:
+                month = true;
+                PDLength = 1 / 12d;
+                break;
+            case 2:
+                days = 7;
+                PDLength = 1 / 52d;
+                break;
+            case 3:
+                days = 14;
+                PDLength = 1 / 26d;
+
+                break;
+        }
+        //Interest Rate per Period
+        decimal IRPP = (decimal)IR * (decimal)PDLength;
+        pp = IRPP * Loan.AmtLoan / (decimal)(1 - (Math.Pow(1 + (double)IRPP, (double)Loan.Instalments * -1)));
+        this.amtEachInstalment = pp;
+        
+        decimal rounded = decimal.Round(pp, 2);
+
+        this.Plan = new ArrayList();
+        DateTime temp = Loan.TransferDate;
+        //Principal before interest is added per instalment
+        decimal InstPrinc = (decimal)Loan.AmtLoan / (decimal)Loan.Instalments;
+        decimal InstInterest = rounded - InstPrinc;
+        for (int i = 0; i < Loan.Instalments; i++)
+        {
+            PaymentTotal = decimal.Round(PaymentTotal, 2);
+            PPlan x = new PPlan();
+            x.Principal = InstPrinc;
+            x.Interest = InstInterest;
+            x.AmtDue = rounded;
+            if (PaymentTotal >= x.AmtDue)
+            {
+                PaymentTotal -= (decimal)x.AmtDue;
+                x.AmtDue = 0;
+            }
+            else
+            {
+                x.AmtDue -= PaymentTotal;
+                PaymentTotal = 0;
+            }
+            if (month)
+            {
+                x.DateDue = temp.AddMonths(1);
+            }
+            else
+            {
+                x.DateDue = temp.AddDays(days);
+            }
+            temp = x.DateDue;
+            if (x.AmtDue != 0)
+            {
+
+
+                if (0 > x.DateDue.AddMonths(3).CompareTo(DateTime.Now))
+                {
+                    x.status = 3;
+                }
+                else if (0 > x.DateDue.CompareTo(DateTime.Now))
+                {
+                    x.status = 2;
+                }
+                else
+                {
+                    x.status = 0;
+                }
+
+            }
+            else
+            {
+                x.status = 1;
+            }
+            Plan.Add(x);
+
+
+        }
+        foreach (PPlan item in Plan)
+        {
+            this.TotalOwed += item.AmtDue;
+
+        }
+        this.TotalInterest = this.TotalOwed - Loan.AmtLoan;
+    }
+        
+
     }
 
 

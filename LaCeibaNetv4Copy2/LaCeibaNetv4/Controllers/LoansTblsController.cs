@@ -113,6 +113,7 @@ namespace LaCeibaNetv4.Controllers
             ViewBag.RoundId = (int)id;
             RoundTbl RoundTbl = db.RoundTbls.Find(id);
             ViewBag.ProgramName = RoundTbl.ProgramClientTbl.ProgramTbl.Program;
+            ViewBag.ProgramIR = RoundTbl.ProgramClientTbl.ProgramTbl.InterestRate;
             ViewBag.sugAmt = RoundTbl.LoanAmt();
             LoansTbl newloan = new LoansTbl();
             newloan.AmtLoan = RoundTbl.LoanAmt();
@@ -122,15 +123,18 @@ namespace LaCeibaNetv4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult IndLoanCreate([Bind(Exclude = "Id")] LoansTbl newloan, string Command, string Program)
+        public ActionResult IndLoanCreate([Bind(Exclude = "Id")] LoansTbl newloan, string Command, string Program, double ProgramIR)
         {
             if (Command == "Calculate")
             {
+                
                 PPlanHold holder = new PPlanHold();
-                holder.CreatePlan(Convert.ToInt32(newloan.Instalments), newloan.RepFreqId, newloan.AmtLoan, Program, newloan.TransferDate);
+                //holder.CreatePlan(Convert.ToInt32(newloan.Instalments), newloan.RepFreqId, newloan.AmtLoan, Program, newloan.TransferDate);
+                holder.CreatePlanV2(newloan ,ProgramIR);
                 ViewBag.RoundId = (int)newloan.RoundId;
                 RoundTbl RoundTbl = db.RoundTbls.Find(newloan.RoundId);
                 ViewBag.ProgramName = RoundTbl.ProgramClientTbl.ProgramTbl.Program;
+                ViewBag.ProgramIR = RoundTbl.ProgramClientTbl.ProgramTbl.InterestRate;
                 ViewBag.sugAmt = RoundTbl.LoanAmt();
                 LoansTbl newloan2 = new LoansTbl();
                 newloan.AmtLoan = RoundTbl.LoanAmt();
@@ -191,12 +195,14 @@ namespace LaCeibaNetv4.Controllers
             base.Dispose(disposing);
         }
 
+        //Used for both EAL and PLP
         public ActionResult PLPContract(int id) {
             LoansTbl loan = db.LoansTbls.Find(id);
             string Program = loan.RoundTbl.ProgramClientTbl.ProgramTbl.Program;
          
                 PPlanHold holder = new PPlanHold();
-                holder.CreatePlan(Convert.ToInt32(loan.Instalments), loan.RepFreqId, loan.AmtLoan, Program, loan.TransferDate);
+                //holder.CreatePlan(Convert.ToInt32(loan.Instalments), loan.RepFreqId, loan.AmtLoan, Program, loan.TransferDate);
+                holder.CreatePlanV2(loan);
 
                 ViewBag.plan = holder.Plan;
                 ViewBag.planDeets = holder;

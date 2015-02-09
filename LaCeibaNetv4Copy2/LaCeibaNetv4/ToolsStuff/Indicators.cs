@@ -71,55 +71,27 @@ namespace LaCeibaNetv4.ToolsStuff
         public static decimal interestClac(this LoansTbl loan)
         {
             int Inst = loan.Instalments ?? 0;
-            var Princ = loan.AmtLoan;
-            decimal pp = 0;
-            var Freq = loan.RepFreqId;
-            if (loan.RoundTbl.ProgramClientTbl.ProgramTbl.Program.Equals("PLP"))
+            decimal PaymentTotal = (decimal)loan.PaymentTbls.Sum(x => x.AmtPaid);
+            double IR = loan.RoundTbl.ProgramClientTbl.ProgramTbl.InterestRate / 100;
+            double PDLength = 0;
+            decimal pp = 0m;
+            switch (loan.RepFreqId)
             {
-                switch (Freq)
-                {
-                    case 1:
-                      pp = .0125m * Princ / (decimal)(1 - (Math.Pow(1 + 0.0125, Inst * -1)));
+                case 1:
+                    PDLength = 1 / 12d;
+                    break;
+                case 2:
+                    PDLength = 1 / 52d;
+                    break;
+                case 3:
+                    PDLength = 1 / 26d;
 
-                        
-                        break;
-                    case 2:
-                       pp = .003125m * Princ / (decimal)(1 - (Math.Pow(1 + 0.003125, Inst * -1)));
-                        
-                        break;
-                    case 3:
-                        pp = .00625m * Princ / (decimal)(1 - (Math.Pow(1 + .00625, Inst * -1)));
-                        
-                        break;
-                    default: 
-                        return 0;
-                        
-                }
-               ;
+                    break;
             }
-            else
-            {
-                switch (Freq)
-                {
-                    case 1:
-                     pp = .025m * Princ / (decimal)(1 - (Math.Pow(1 + 0.025, Inst * -1)));
-
-                        
-                        break;
-                    case 2:
-                       pp = .00625m * Princ / (decimal)(1 - (Math.Pow(1 + 0.00625, Inst * -1)));
-                        
-                        break;
-                    case 3:
-                      pp = .0125m * Princ / (decimal)(1 - (Math.Pow(1 + .0125, Inst * -1)));
-                        
-                        break;
-                    default:
-                        return 0;
-                }
-                
-            }
-            return Math.Round(pp, 2) * (int)loan.Instalments - loan.AmtLoan;
+            //Interest Rate per Period
+            decimal IRPP = (decimal)IR * (decimal)PDLength;
+            pp = IRPP * loan.AmtLoan / (decimal)(1 - (Math.Pow(1 + (double)IRPP, (double)loan.Instalments * -1)));
+            return decimal.Round(pp, 2) * (int)loan.Instalments - loan.AmtLoan;
 
 
 
@@ -205,7 +177,7 @@ namespace LaCeibaNetv4.ToolsStuff
             {
                 Total += item.interestClac();
             }
-            return Decimal.Round(Total , 2);
+            return decimal.Round(Total , 2);
 
 
         }
@@ -213,28 +185,113 @@ namespace LaCeibaNetv4.ToolsStuff
         {
             decimal TotalWithInterest = db.PaymentTbls.ToList().Sum(x => x.AmtPaid ?? 0);
             decimal TotalLoanedOut = db.LoansTbls.ToList().Sum(x => x.AmtLoan);
-            return Decimal.Round(TotalWithInterest - TotalLoanedOut , 2);
+            return decimal.Round(TotalWithInterest - TotalLoanedOut , 2);
 
         }
 
-        public static List<KeyValuePair<int, int>> StatusPerLoanLevel(this LaCeibaDbv4Entities db, bool? status)
+        public static object[] StatusPerLoanLevel(this LaCeibaDbv4Entities db, bool? status)
         {
 
-            var MainList = db.RoundTbls.Where(x => x.ProgramClientTbl.ClientsTbl.Active == status).GroupBy(x => x.RoundNum).ToList();
+            var MainListPLP = db.LoansTbls.Where(x => x.RoundTbl.ProgramClientTbl.ClientsTbl.Active == status && x.Active == true && x.RoundTbl.ProgramClientTbl.ProgramTbl.Program == "PLP").GroupBy(x => x.RoundTbl.RoundNum).ToList();
+            var MainListEAL = db.LoansTbls.Where(x => x.RoundTbl.ProgramClientTbl.ClientsTbl.Active == status && x.Active == true && x.RoundTbl.ProgramClientTbl.ProgramTbl.Program == "EAL").GroupBy(x => x.RoundTbl.RoundNum).ToList();
+            
+            var ReturnListPLP = new List<Tuple<int, int>>();
+            var ReturnListEAL = new List<Tuple<int, int>>();
+            var ReturnListFull = new List<int>();
+            var FinalListFull = new List<int>(); 
+            var IntListFull = new List<int>(); 
+            
 
-            var ReturnList = new List<KeyValuePair<int, int>>();
-
-            foreach (var item in MainList)
+            foreach (var item in MainListPLP)
             {
-                ReturnList.Add(new KeyValuePair<int , int>(item.Key , item.Count()));
+                foreach (var person in item)
+                {
+                    ReturnListFull.Add(getLoanAmt(person.RoundTbl.RoundNum, 1));
+                }
+                
+            }
+
+            foreach (var item in MainListEAL)
+            {
+                foreach (var person in item)
+                {
+                    ReturnListFull.Add(getLoanAmt(person.RoundTbl.RoundNum, 0));
+                }
+
+            }
+            //create ladder list
+            for (int i = 1; i < 7; i++)
+            {
+                FinalListFull.Add(getLoanAmt(i, 1));
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                FinalListFull.Add(getLoanAmt(i, 0));
+            }
+            foreach (var item in FinalListFull)
+            {
+                IntListFull.Add(ReturnListFull.Where(x => x.Equals(item)).Count());
+            }
+            //ReturnListPLP.Concat(ReturnListEAL);
+            return IntListFull.Cast<object>().ToArray();
+
+         }
+
+        
+
+        //if plp = 1 it will do plp amounts
+        private static int getLoanAmt(int level , int plp)
+        {
+            if (plp == 1)
+            {
+
+
+                switch (level)
+                {
+                    case 1:
+                        return 500;
+
+                    case 2:
+                        return 750;
+                    case 3:
+                        return 1000;
+                    case 4:
+                        return 1250;
+                    case 5:
+                        return 1500;
+                    case 6:
+                        return 1750;
+                    case 7:
+                        return 2000;
+                    default:
+                        return 0;
+                }
+            }
+            else
+            {
+                switch (level)
+                {
+                    case 1:
+                        return 2500;
+
+                    case 2:
+                        return 3000;
+                    case 3:
+                        return 3500;
+                    case 4:
+                        return 4000;
+                    case 5:
+                        return 4500;
+                    case 6:
+                        return 5000;
+                    default:
+                        return 0;
+                }
             }
 
 
+        }
 
 
-
-            return ReturnList;
-
-         }
     }
 }

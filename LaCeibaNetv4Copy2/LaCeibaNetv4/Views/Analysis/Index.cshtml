@@ -1,12 +1,9 @@
-﻿
+﻿@using DotNet.Highcharts;
 @{
     ViewBag.Title = "Index";
 }
-
-
-
-
-
-<h2>Index</h2>
-
-<img src="~/Views/Analysis/Charts.cshtml" />
+@model DotNet.Highcharts.Highcharts
+<h2>Anaysis</h2>
+<div>
+@(Model)
+</div>

@@ -144,7 +144,8 @@ namespace LaCeibaNetv4.Controllers
         {
             LoansTbl loaninfo = db.LoansTbls.Find(id);
             PPlanHold holder = new PPlanHold();
-            holder.CreatePlan(Convert.ToInt32(loaninfo.Instalments), (int)loaninfo.RepFreqId, loaninfo.AmtLoan, loaninfo.RoundTbl.ProgramClientTbl.ProgramTbl.Program, loaninfo.TransferDate, loaninfo.PaymentTbls.Sum(x => (decimal)x.AmtPaid) );
+            //holder.CreatePlan(Convert.ToInt32(loaninfo.Instalments), (int)loaninfo.RepFreqId, loaninfo.AmtLoan, loaninfo.RoundTbl.ProgramClientTbl.ProgramTbl.Program, loaninfo.TransferDate, loaninfo.PaymentTbls.Sum(x => (decimal)x.AmtPaid) );
+            holder.CreatePlanV2(loaninfo);
             ViewBag.plan = holder.Plan;
             ViewBag.Total = holder.TotalOwed;
             

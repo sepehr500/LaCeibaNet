@@ -7,7 +7,10 @@
     <title>@ViewBag.Title </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/highcharts")
     <meta name="google-translate-customization" content="a8f56d91d1f6e4c1-789bf1d73e844210-gef02e7e8cc2de976-1c"></meta>
+
 </head>
 <body >
     <div class="navbar navbar-inverse navbar-fixed-top"   >
@@ -27,6 +30,7 @@
                     <li>@Html.ActionLink("Program", "Index", "ProgramClientTbls")</li>
                     <li>@Html.ActionLink("Rounds", "Index", "RoundTbl")</li>
                     <li>@Html.ActionLink("Loans", "Index", "LoansTbls")</li>
+                    <li>@Html.ActionLink("Analysis", "Index" , "Analysis")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -44,14 +48,17 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    
+    
     <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
     }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
 </body>
 </html>
