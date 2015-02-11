@@ -5,8 +5,9 @@ using System.Web;
 
 namespace LaCeibaNetv4.Models.Classes
 {
-    public class CScore
+    public static class CScore
     {
+        //gets the numerator
         public static int getNum(ClientsTbl x) {
             int Num = 0;
             foreach (var item in x.ProgramClientTbls)
@@ -69,8 +70,10 @@ namespace LaCeibaNetv4.Models.Classes
             }
             return Num;
         }
+        //gets number of payments multiplied by 100
         public static int paymentCount(ClientsTbl x)
         {
+
             int Num = 0;
             foreach (var item in x.ProgramClientTbls)
             {
@@ -83,6 +86,20 @@ namespace LaCeibaNetv4.Models.Classes
                 }
             }
             return Num * 10;
+        }
+        public static string getCScore(this ClientsTbl client)
+        {
+            decimal score = 0;
+            if (CScore.paymentCount(client) != 0)
+            {
+            score = (decimal)CScore.getNum(client) / (decimal)CScore.paymentCount(client) * 100;
+            }
+            else
+            {
+            score = 0;
+            }
+        
+           return  String.Format("{0:f2}", score) + "%";
         }
     }
 }

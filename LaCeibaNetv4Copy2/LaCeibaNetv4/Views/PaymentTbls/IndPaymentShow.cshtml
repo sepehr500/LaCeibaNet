@@ -1,10 +1,14 @@
 ﻿@model LaCeibaNetv4.Models.LoansTbl
 
+@using LaCeibaNetv4.ToolsStuff
+
+
 @{
+    
     ViewBag.Title = "PaymentTblShow";
 }
 
-<h2> <span style="color: #000000;">@Model.RoundTbl.ProgramClientTbl.ClientsTbl.FirstName @Model.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName1 @Model.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName2  @Model.RoundTbl.ProgramClientTbl.ClientsTbl.LastName</span> | <span style="color: #080468">@Model.RoundTbl.ProgramClientTbl.ProgramTbl.Program</span> | <span style="color: #130da9">Round:@Model.RoundTbl.RoundNum</span>  |  <span style="color: #1d15db"> @String.Format("{0:f2}", Model.AmtLoan) LPS</span> </h2>
+<h2> <span style="color: #000000;">@Model.RoundTbl.ProgramClientTbl.ClientsTbl.GetFullName() </span> | <span style="color: #080468">@Model.RoundTbl.ProgramClientTbl.ProgramTbl.Program</span> | <span style="color: #130da9">Round:@Model.RoundTbl.RoundNum</span>  |  <span style="color: #1d15db"> @String.Format("{0:f2}", Model.AmtLoan) HNL</span> </h2>
 
 <p>
     @Html.ActionLink("Add New Payment", "IndPaymentCreate", new { controller = "PaymentTbls", id = Model.Id, DueDate = System.DateTime.Now })

@@ -238,6 +238,7 @@
     <Compile Include="ToolsStuff\Charts.cs" />
     <Compile Include="ToolsStuff\Indicators.cs" />
     <Compile Include="ToolsStuff\SpanDate.cs" />
+    <Compile Include="ToolsStuff\UserEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CEIBA2-231x300.jpg" />

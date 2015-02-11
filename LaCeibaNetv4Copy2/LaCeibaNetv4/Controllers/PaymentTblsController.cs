@@ -67,6 +67,7 @@ namespace LaCeibaNetv4.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ViewBag.LoanId = id;
             PaymentTbl newPayment = new PaymentTbl();
             newPayment.LoanId = id;
             newPayment.DatePmtDue = DueDate;
@@ -148,6 +149,7 @@ namespace LaCeibaNetv4.Controllers
             holder.CreatePlanV2(loaninfo);
             ViewBag.plan = holder.Plan;
             ViewBag.Total = holder.TotalOwed;
+            
             
             return View(loaninfo);
         }
