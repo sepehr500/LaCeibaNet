@@ -127,19 +127,21 @@ namespace LaCeibaNetv4.Controllers
         {
             if (Command == "Calculate")
             {
-                
+                RoundTbl RoundTbl = db.RoundTbls.Find(newloan.RoundId);
+                PaymentPlan Plan = new PaymentPlan();
                 PPlanHold holder = new PPlanHold();
                 //holder.CreatePlan(Convert.ToInt32(newloan.Instalments), newloan.RepFreqId, newloan.AmtLoan, Program, newloan.TransferDate);
+                Plan.CreatePaymentPlan(newloan, RoundTbl);
                 holder.CreatePlanV2(newloan ,ProgramIR);
                 ViewBag.RoundId = (int)newloan.RoundId;
-                RoundTbl RoundTbl = db.RoundTbls.Find(newloan.RoundId);
+                
                 ViewBag.ProgramName = RoundTbl.ProgramClientTbl.ProgramTbl.Program;
                 ViewBag.ProgramIR = RoundTbl.ProgramClientTbl.ProgramTbl.InterestRate;
                 ViewBag.sugAmt = RoundTbl.LoanAmt();
                 LoansTbl newloan2 = new LoansTbl();
                 newloan.AmtLoan = RoundTbl.LoanAmt();
                 ViewBag.RepFreqId = new SelectList(db.RepFreq, "Id", "Frequency");
-                ViewBag.plan = holder.Plan;
+                ViewBag.plan = Plan;
                 return View(newloan2);
 
             }
@@ -203,8 +205,14 @@ namespace LaCeibaNetv4.Controllers
                 PPlanHold holder = new PPlanHold();
                 //holder.CreatePlan(Convert.ToInt32(loan.Instalments), loan.RepFreqId, loan.AmtLoan, Program, loan.TransferDate);
                 holder.CreatePlanV2(loan);
+                PaymentPlan x = new PaymentPlan();
 
-                ViewBag.plan = holder.Plan;
+                LoansTbl loaninfo = db.LoansTbls.Find(id);
+                x.CreatePaymentPlan(loaninfo);
+                //ViewBag.plan = holder.Plan;
+                ViewBag.plan = x;
+                ViewBag.EMI = x.Payments.First().PaymentDue;
+               
                 ViewBag.planDeets = holder;
                 
                 ViewBag.ClientName = loan.RoundTbl.ProgramClientTbl.ClientsTbl.FirstName + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName1 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.MiddleName2 + loan.RoundTbl.ProgramClientTbl.ClientsTbl.LastName;

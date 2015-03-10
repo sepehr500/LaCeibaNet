@@ -53,16 +53,19 @@ namespace LaCeibaNetv4.ToolsStuff
         public static decimal repaymentRate(this LaCeibaDbv4Entities db)
         {
 
+            //Take all the payments made on active loans.
             var query = from c in db.PaymentTbls
                         where c.LoansTbl.Active == true
                         select c;
             var LoansPaid = query.Count();
 
+            //Take All the loans that are active, and find the total number of instalments
             var query2 = from c in db.LoansTbls
                         where c.Active == true
                         select c;
             var TotalInstalments = query2.Sum(x => x.Instalments);
 
+            //Total Payments on Active Loans  / Total Installments on Active Loans 
             return (decimal)LoansPaid / (decimal)TotalInstalments * 100;
                     
 

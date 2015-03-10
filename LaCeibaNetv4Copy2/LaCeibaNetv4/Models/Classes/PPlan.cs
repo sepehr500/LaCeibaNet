@@ -363,8 +363,8 @@ namespace LaCeibaNetv4.Models.Classes
                 break;
         }
         //Interest Rate per Period
-        decimal IRPP = (decimal)IR * (decimal)PDLength;
-        pp = IRPP * Loan.AmtLoan / (decimal)(1 - (Math.Pow(1 + (double)IRPP, (double)Loan.Instalments * -1)));
+        double IRPP = IR * PDLength;
+        pp = (decimal)IRPP * Loan.AmtLoan / (decimal)(1 - (Math.Pow(1 + (double)IRPP, (double)Loan.Instalments * -1)));
         this.amtEachInstalment = pp;
         
         decimal rounded = decimal.Round(pp, 2);
@@ -380,6 +380,7 @@ namespace LaCeibaNetv4.Models.Classes
             PPlan x = new PPlan();
             x.Principal = InstPrinc;
             x.Interest = InstInterest;
+            //amt due is the same every time...EMI
             x.AmtDue = rounded;
             if (PaymentTotal >= x.AmtDue)
             {
@@ -426,11 +427,13 @@ namespace LaCeibaNetv4.Models.Classes
 
 
         }
-        foreach (PPlan item in Plan)
-        {
-            this.TotalOwed += item.AmtDue;
+        //foreach (PPlan item in Plan)
+        //{
+        //    this.TotalOwed += item.AmtDue;
 
-        }
+        //}
+        //THIS LINE MIGHT BE AN ISSUE. ROUNDED AND NOT ROUNDED ARE DIFFERENT
+        this.TotalOwed = ((decimal)Loan.Instalments * pp) - (decimal)Loan.PaymentTbls.Sum(x => x.AmtPaid);
         this.TotalInterest = this.TotalOwed - Loan.AmtLoan;
     }
         

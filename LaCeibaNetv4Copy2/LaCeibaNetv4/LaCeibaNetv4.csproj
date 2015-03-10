@@ -237,6 +237,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ToolsStuff\Charts.cs" />
     <Compile Include="ToolsStuff\Indicators.cs" />
+    <Compile Include="ToolsStuff\PaymentPlan.cs" />
     <Compile Include="ToolsStuff\SpanDate.cs" />
     <Compile Include="ToolsStuff\UserEx.cs" />
   </ItemGroup>

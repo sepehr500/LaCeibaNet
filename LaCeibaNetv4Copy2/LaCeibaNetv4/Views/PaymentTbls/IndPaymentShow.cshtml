@@ -85,7 +85,7 @@
         </tr>
         int i = 1;
         decimal amt = 0;
-        foreach (var item in ViewBag.plan)
+        foreach (var item in ViewBag.plan.Payments)
         {
             if (item.status == 1)
             {

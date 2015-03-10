@@ -84,21 +84,21 @@
         </tr>
         int i = 1;
         decimal amt = 0;
-        foreach (var item in ViewBag.plan)
+        foreach (var item in ViewBag.plan.Payments)
         {
             <tr>
-                <td>@i</td>
+                <td>@item.Installment</td>
                 <td>@item.DateDue.ToString("d") </td>
-                <td>L @item.AmtDue </td>
+                <td>L @item.PaymentDue </td>
             </tr>
         amt = item.AmtDue;
         i++;
         }
         amt = amt * (i-1);
              <tr>
-                <td></td>
-                <td> </td>
-                <td>Total: @String.Format("{0:f2}", amt) </td>
+                <td>Principal: @ViewBag.plan.getTotalPrincipal() </td>
+                <td>Interest: @ViewBag.plan.getTotalInterest()</td>
+                <td>Total: @String.Format("{0:f2}", ViewBag.plan.getTotalPaymentDue()) </td>
 
             </tr>
         

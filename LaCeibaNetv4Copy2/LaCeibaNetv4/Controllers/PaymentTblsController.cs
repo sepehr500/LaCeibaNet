@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using LaCeibaNetv4.Models;
 using LaCeibaNetv4.Models.Classes;
+using LaCeibaNetv4.ToolsStuff;
 
 namespace LaCeibaNetv4.Controllers
 {
@@ -143,12 +144,16 @@ namespace LaCeibaNetv4.Controllers
 
         public ActionResult IndPaymentShow(int id)
         {
+            PaymentPlan x = new PaymentPlan();
+            
             LoansTbl loaninfo = db.LoansTbls.Find(id);
-            PPlanHold holder = new PPlanHold();
-            //holder.CreatePlan(Convert.ToInt32(loaninfo.Instalments), (int)loaninfo.RepFreqId, loaninfo.AmtLoan, loaninfo.RoundTbl.ProgramClientTbl.ProgramTbl.Program, loaninfo.TransferDate, loaninfo.PaymentTbls.Sum(x => (decimal)x.AmtPaid) );
-            holder.CreatePlanV2(loaninfo);
-            ViewBag.plan = holder.Plan;
-            ViewBag.Total = holder.TotalOwed;
+            x.CreatePaymentPlan(loaninfo);
+            x.applyPayments( (decimal)loaninfo.PaymentTbls.Sum(y => y.AmtPaid) );
+            //PPlanHold holder = new PPlanHold();
+            ////holder.CreatePlan(Convert.ToInt32(loaninfo.Instalments), (int)loaninfo.RepFreqId, loaninfo.AmtLoan, loaninfo.RoundTbl.ProgramClientTbl.ProgramTbl.Program, loaninfo.TransferDate, loaninfo.PaymentTbls.Sum(x => (decimal)x.AmtPaid) );
+            //holder.CreatePlanV2(loaninfo);
+            ViewBag.plan = x;
+            ViewBag.Total = x.getTotalPaymentDue() - loaninfo.PaymentTbls.Sum(y => y.AmtPaid);
             
             
             return View(loaninfo);
