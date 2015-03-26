@@ -59,8 +59,8 @@ namespace LaCeibaNetv4.ToolsStuff
                     PDLength = 1 / 52.177d;
                     break;
                 case 3:
-                    days = 14;
-                    PDLength = 1 / 26d;
+                    days = 15;
+                    PDLength = 15 / 360d;
 
                     break;
             }
@@ -97,6 +97,10 @@ namespace LaCeibaNetv4.ToolsStuff
                else
                {
                    y.DateDue = temp.AddDays(days);
+                   //if (y.DateDue.DayOfWeek == DayOfWeek.Sunday)
+                   //{
+                   //     y.DateDue = y.DateDue.AddDays(1);
+                   //}
                }
                temp = y.DateDue;
                
