@@ -6,7 +6,7 @@ using System.Web;
 
 namespace LaCeibaNetv4.ToolsStuff
 {
-    //This class if for user extention methods
+    //This class is for user extention methods
     public static class UserEx
     {
         public static string GetFullName(this ClientsTbl client) {

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace LaCeibaNetv4.ToolsStuff
 {
-    public class SpanDate
+    public static class SpanDate
     {
         public static string SpanishDate(DateTime date) { 
         
@@ -60,7 +60,7 @@ namespace LaCeibaNetv4.ToolsStuff
         
     }
         //Checks for duplicate names. Return false if duplicate is found.
-        public static bool DupCheck(ClientsTbl orig) {
+        public static bool DupCheck(this ClientsTbl orig) {
             
             LaCeibaDbv4Entities db = new LaCeibaDbv4Entities();
             var name = orig.FirstName + orig.MiddleName1 + orig.MiddleName2 + orig.LastName ;

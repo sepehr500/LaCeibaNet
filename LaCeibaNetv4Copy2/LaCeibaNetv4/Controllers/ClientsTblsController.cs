@@ -87,7 +87,7 @@ namespace LaCeibaNetv4.Controllers
         public ActionResult Create([Bind(Include = "Id,FirstName,LastName,CenterId,MiddleName1,MiddleName2,DateAdded,BirthDay")] ClientsTbl clientsTbl)
         {
 
-            if (SpanDate.DupCheck(clientsTbl) == false)
+            if (clientsTbl.DupCheck() == false)
             {
                 ViewBag.CenterId = new SelectList(db.CenterTbls, "Id", "Center", clientsTbl.CenterId);
                 ViewBag.DuplicateError = "Person Already Exists";

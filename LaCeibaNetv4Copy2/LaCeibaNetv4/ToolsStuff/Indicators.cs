@@ -103,7 +103,6 @@ namespace LaCeibaNetv4.ToolsStuff
 
         //porfolio at risk
         public static decimal PAR ( this LaCeibaDbv4Entities db , int days){
-            decimal AtRisk = 0;
             int NumAtRisk = 0;
 
             var ActiveLoans = db.LoansTbls.Where(x => x.Active == true).ToList();
